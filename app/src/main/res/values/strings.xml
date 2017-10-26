@@ -2,11 +2,11 @@
     <string name="app_name" translatable="false">MultiQuiz</string>
     <string name="question">Question</string>
     <string name="check">Check</string>
-    <string name="question_content">Which is the capital of Bhutan?</string>
+    <!--<string name="question_content">Which is the capital of Bhutan?</string>-->
     <string name="correct">Very good!</string>
     <string name="incorrect">Incorrect...</string>
 
-    <array name="answers">
+   <!-- <array name="answers">
         <item>Ougadougou</item>
         <item>Phnom Penh</item>
         <item>Thimpu</item>
@@ -14,6 +14,11 @@
 
     </array>
 
-    <integer name="correct_answer">2</integer>
+    <integer name="correct_answer">2</integer>-->
+
+    <array name="all_questions">
+        <item>Which is the capital of Bhutan?;Ougadougou;Phnom Penh;*Thimpu;Antananarivo</item>
+        <item>Pregunta 2;a;*b;c;d</item>
+    </array>
 
 </resources>

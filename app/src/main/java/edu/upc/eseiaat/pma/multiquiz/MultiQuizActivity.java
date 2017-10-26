@@ -14,24 +14,34 @@ public class MultiQuizActivity extends AppCompatActivity {
     private int ids_answers[] = {
             R.id.answer1, R.id.answer2, R.id.answer3, R.id.answer4
     };
+    private int correct_answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_quiz);
 
-        TextView text_question = (TextView) findViewById(R.id.text_question);
-        text_question.setText(R.string.question_content);
+        String [] all_questions = getResources().getStringArray(R.array.all_questions);
+        String q0 = all_questions[0];
+        String [] parts = q0.split(";");
 
-        String[] answers = getResources().getStringArray(R.array.answers);
+        TextView text_question = (TextView) findViewById(R.id.text_question);
+        text_question.setText(parts[0]);
+
+
 
         for (int i = 0; i < ids_answers.length; i++){
             RadioButton rb = (RadioButton) findViewById(ids_answers[i]);
-            rb.setText(answers[i]);
+            String answer = parts[i+1];
+            if (answer.charAt(0) == '*'){
+                correct_answer = i;
+                answer = answer.substring(1);
+            }
+            rb.setText(answer);
         }
 
         Button btn_check = (Button) findViewById(R.id.btn_check);
-        final int correct_answer = getResources().getInteger(R.integer.correct_answer);
+        
         final RadioGroup group = (RadioGroup) findViewById(R.id.answer_group);
 
         btn_check.setOnClickListener(new View.OnClickListener() {
