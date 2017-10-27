@@ -7,4 +7,5 @@
     <string name="incorrect">Incorrecto...</string>
     <string name="finish">Acaba</string>
     <string name="next">Siguiente</string>
+    <string name="prev">Anterior</string>
 </resources>

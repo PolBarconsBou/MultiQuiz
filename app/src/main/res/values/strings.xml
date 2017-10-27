@@ -6,6 +6,7 @@
     <string name="incorrect">Incorrect...</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
+    <string name="prev">Previous</string>
 
     <array name="all_questions">
         <item>Which is the capital of Bhutan?;Ougadougou;Phnom Penh;*Thimpu;Antananarivo</item>

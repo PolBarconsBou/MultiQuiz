@@ -20,7 +20,7 @@ public class MultiQuizActivity extends AppCompatActivity {
     private TextView text_question;
     private RadioGroup group;
     private boolean[] answer_is_correct;
-    private Button btn_next;
+    private Button btn_next, btn_prev;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +30,21 @@ public class MultiQuizActivity extends AppCompatActivity {
         text_question = (TextView) findViewById(R.id.text_question);
         group = (RadioGroup) findViewById(R.id.answer_group);
         btn_next = (Button) findViewById(R.id.btn_check);
+        btn_prev = (Button) findViewById(R.id.btn_prev);
         all_questions = getResources().getStringArray(R.array.all_questions);
         answer_is_correct = new boolean[all_questions.length];
         current_question = 0;
         showQuestion();
 
+        btn_prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(current_question > 0){
+                    current_question--;
+                    showQuestion();
+                }
+            }
+        });
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,11 +56,7 @@ public class MultiQuizActivity extends AppCompatActivity {
                         answer = i;
                     }
                 }
-                /*if (answer == correct_answer){
-                    Toast.makeText(MultiQuizActivity.this, R.string.correct, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MultiQuizActivity.this, R.string.incorrect, Toast.LENGTH_SHORT).show();
-                }*/
+
 
                 answer_is_correct[current_question] = (answer == correct_answer);
 
@@ -66,7 +72,8 @@ public class MultiQuizActivity extends AppCompatActivity {
                     String resultado =
                             String.format("Correctas: %d -- Incorrectas: %d", correctas, incorrectas);
 
-                    Toast.makeText(MultiQuizActivity.this, resultado, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MultiQuizActivity.this, resultado, Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });
@@ -91,8 +98,16 @@ public class MultiQuizActivity extends AppCompatActivity {
             rb.setText(answer);
 
         }
+
+        if(current_question == 0){
+            btn_prev.setVisibility(View.GONE);
+        } else {
+            btn_prev.setVisibility(View.VISIBLE);
+        }
         if (current_question == all_questions.length-1){
             btn_next.setText(R.string.finish);
+        } else {
+            btn_next.setText(R.string.next);
         }
     }
 }
