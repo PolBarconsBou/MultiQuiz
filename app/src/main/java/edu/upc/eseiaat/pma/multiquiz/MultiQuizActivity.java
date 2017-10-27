@@ -18,6 +18,7 @@ public class MultiQuizActivity extends AppCompatActivity {
     private int current_question;
     private String[] all_questions;
     private TextView text_question;
+    private RadioGroup group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +26,13 @@ public class MultiQuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multi_quiz);
 
         text_question = (TextView) findViewById(R.id.text_question);
+        group = (RadioGroup) findViewById(R.id.answer_group);
 
         all_questions = getResources().getStringArray(R.array.all_questions);
         current_question = 0;
         showQuestion();
 
         Button btn_check = (Button) findViewById(R.id.btn_check);
-        
-        final RadioGroup group = (RadioGroup) findViewById(R.id.answer_group);
-
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +48,9 @@ public class MultiQuizActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MultiQuizActivity.this, R.string.incorrect, Toast.LENGTH_SHORT).show();
                 }
+                if (current_question < all_questions.length-1){
+                current_question++;
+                showQuestion();}
             }
         });
     }
@@ -56,6 +58,8 @@ public class MultiQuizActivity extends AppCompatActivity {
     private void showQuestion() {
         String q = all_questions[current_question];
         String [] parts = q.split(";");
+
+        group.clearCheck();
 
         text_question.setText(parts[0]);
 
