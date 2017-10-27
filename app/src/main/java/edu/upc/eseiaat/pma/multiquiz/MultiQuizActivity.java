@@ -19,6 +19,8 @@ public class MultiQuizActivity extends AppCompatActivity {
     private String[] all_questions;
     private TextView text_question;
     private RadioGroup group;
+    private boolean[] answer_is_correct;
+    private Button btn_next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +29,14 @@ public class MultiQuizActivity extends AppCompatActivity {
 
         text_question = (TextView) findViewById(R.id.text_question);
         group = (RadioGroup) findViewById(R.id.answer_group);
-
+        btn_next = (Button) findViewById(R.id.btn_check);
         all_questions = getResources().getStringArray(R.array.all_questions);
+        answer_is_correct = new boolean[all_questions.length];
         current_question = 0;
         showQuestion();
 
-        Button btn_check = (Button) findViewById(R.id.btn_check);
-        btn_check.setOnClickListener(new View.OnClickListener() {
+
+        btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = group.getCheckedRadioButtonId();
@@ -43,14 +46,28 @@ public class MultiQuizActivity extends AppCompatActivity {
                         answer = i;
                     }
                 }
-                if (answer == correct_answer){
+                /*if (answer == correct_answer){
                     Toast.makeText(MultiQuizActivity.this, R.string.correct, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MultiQuizActivity.this, R.string.incorrect, Toast.LENGTH_SHORT).show();
-                }
+                }*/
+
+                answer_is_correct[current_question] = (answer == correct_answer);
+
                 if (current_question < all_questions.length-1){
                 current_question++;
                 showQuestion();}
+                else {
+                    int correctas = 0, incorrectas = 0;
+                    for(boolean b : answer_is_correct){
+                        if(b) correctas++;
+                        else incorrectas++;
+                    }
+                    String resultado =
+                            String.format("Correctas: %d -- Incorrectas: %d", correctas, incorrectas);
+
+                    Toast.makeText(MultiQuizActivity.this, resultado, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -72,6 +89,10 @@ public class MultiQuizActivity extends AppCompatActivity {
                 answer = answer.substring(1);
             }
             rb.setText(answer);
+
+        }
+        if (current_question == all_questions.length-1){
+            btn_next.setText(R.string.finish);
         }
     }
 }
