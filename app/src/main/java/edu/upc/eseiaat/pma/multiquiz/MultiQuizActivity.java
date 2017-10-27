@@ -15,30 +15,20 @@ public class MultiQuizActivity extends AppCompatActivity {
             R.id.answer1, R.id.answer2, R.id.answer3, R.id.answer4
     };
     private int correct_answer;
+    private int current_question;
+    private String[] all_questions;
+    private TextView text_question;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_quiz);
 
-        String [] all_questions = getResources().getStringArray(R.array.all_questions);
-        String q0 = all_questions[0];
-        String [] parts = q0.split(";");
+        text_question = (TextView) findViewById(R.id.text_question);
 
-        TextView text_question = (TextView) findViewById(R.id.text_question);
-        text_question.setText(parts[0]);
-
-
-
-        for (int i = 0; i < ids_answers.length; i++){
-            RadioButton rb = (RadioButton) findViewById(ids_answers[i]);
-            String answer = parts[i+1];
-            if (answer.charAt(0) == '*'){
-                correct_answer = i;
-                answer = answer.substring(1);
-            }
-            rb.setText(answer);
-        }
+        all_questions = getResources().getStringArray(R.array.all_questions);
+        current_question = 0;
+        showQuestion();
 
         Button btn_check = (Button) findViewById(R.id.btn_check);
         
@@ -61,5 +51,23 @@ public class MultiQuizActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void showQuestion() {
+        String q = all_questions[current_question];
+        String [] parts = q.split(";");
+
+        text_question.setText(parts[0]);
+
+
+        for (int i = 0; i < ids_answers.length; i++){
+            RadioButton rb = (RadioButton) findViewById(ids_answers[i]);
+            String answer = parts[i+1];
+            if (answer.charAt(0) == '*'){
+                correct_answer = i;
+                answer = answer.substring(1);
+            }
+            rb.setText(answer);
+        }
     }
 }
