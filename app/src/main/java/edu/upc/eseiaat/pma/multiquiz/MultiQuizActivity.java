@@ -21,6 +21,7 @@ public class MultiQuizActivity extends AppCompatActivity {
     private RadioGroup group;
     private boolean[] answer_is_correct;
     private Button btn_next, btn_prev;
+    private int[] answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,10 @@ public class MultiQuizActivity extends AppCompatActivity {
         btn_next = (Button) findViewById(R.id.btn_check);
         btn_prev = (Button) findViewById(R.id.btn_prev);
         all_questions = getResources().getStringArray(R.array.all_questions);
+        answer = new int[all_questions.length];
+        for(int i = 0; i < answer.length; i++){
+            answer[i] = -1;
+        }
         answer_is_correct = new boolean[all_questions.length];
         current_question = 0;
         showQuestion();
@@ -39,6 +44,7 @@ public class MultiQuizActivity extends AppCompatActivity {
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkAnswer();
                 if(current_question > 0){
                     current_question--;
                     showQuestion();
@@ -49,16 +55,7 @@ public class MultiQuizActivity extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = group.getCheckedRadioButtonId();
-                int answer = -1;
-                for(int i = 0; i < ids_answers.length; i++){
-                    if (ids_answers[i] == id){
-                        answer = i;
-                    }
-                }
-
-
-                answer_is_correct[current_question] = (answer == correct_answer);
+                checkAnswer();
 
                 if (current_question < all_questions.length-1){
                 current_question++;
@@ -79,6 +76,20 @@ public class MultiQuizActivity extends AppCompatActivity {
         });
     }
 
+    private void checkAnswer() {
+        int id = group.getCheckedRadioButtonId();
+        int ans = -1;
+        for(int i = 0; i < ids_answers.length; i++){
+            if (ids_answers[i] == id){
+                ans = i;
+            }
+        }
+
+
+        answer_is_correct[current_question] = (ans == correct_answer);
+        answer[current_question] = ans;
+    }
+
     private void showQuestion() {
         String q = all_questions[current_question];
         String [] parts = q.split(";");
@@ -90,12 +101,15 @@ public class MultiQuizActivity extends AppCompatActivity {
 
         for (int i = 0; i < ids_answers.length; i++){
             RadioButton rb = (RadioButton) findViewById(ids_answers[i]);
-            String answer = parts[i+1];
-            if (answer.charAt(0) == '*'){
+            String ans = parts[i+1];
+            if (ans.charAt(0) == '*'){
                 correct_answer = i;
-                answer = answer.substring(1);
+                ans = ans.substring(1);
             }
-            rb.setText(answer);
+            rb.setText(ans);
+            if(answer[current_question] == i){
+                rb.setChecked(true);
+            }
 
         }
 
